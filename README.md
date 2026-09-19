@@ -5,13 +5,13 @@ This is the official Homebrew tap for [aerofi](https://github.com/frostymur/aero
 ## Installation
 
 ```bash
-brew install frostymur/aerofi/aerofi
+brew install frostymur/tap/aerofi
 ```
 
 Or you can add the tap first and then install:
 
 ```bash
-brew tap frostymur/aerofi
+brew tap frostymur/tap
 brew install aerofi
 
 # Start as a background service (starts automatically at login)
