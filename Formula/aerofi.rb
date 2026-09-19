@@ -5,10 +5,10 @@ class Aerofi < Formula
 
   if Hardware::CPU.arm?
     url "https://github.com/frostymur/aerofi/releases/download/v0.2.2/aerofi-mac-arm64.tar.gz"
-    sha256 "6d8f956031d0fa65e66c3cc403b798eef44012888e3be4a8cdda71a05c16ae71"
+    sha256 "debed4a6c42aab35ae27d64e771918a2beffa185527f99ab24a5d72ef2e1d93f"
   else
     url "https://github.com/frostymur/aerofi/releases/download/v0.2.2/aerofi-mac-x86_64.tar.gz"
-    sha256 "c16e6b1bc54a02d51999fb38a4cda3fdd3208dd26c6527ff4d1ea7685b976f0a"
+    sha256 "059dc63bfd9940e49de9822174023192da6ce2679b983668e902665894d44bc6"
   end
 
   def install
