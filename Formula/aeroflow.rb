@@ -22,10 +22,10 @@ class Aeroflow < Formula
     unless File.exist?(swift)
       odie "System Swift toolchain not found. Install Xcode Command Line Tools first: xcode-select --install"
     end
-    system swift, "build", "-c", "release", "--arch", "arm64"
+    system swift, "build", "-c", "release", "--arch", "arm64", "--disable-sandbox"
     rel = Pathname.new(
       Utils.safe_popen_read(
-        swift, "build", "-c", "release", "--arch", "arm64", "--show-bin-path"
+        swift, "build", "-c", "release", "--arch", "arm64", "--disable-sandbox", "--show-bin-path"
       ).chomp,
     )
 
