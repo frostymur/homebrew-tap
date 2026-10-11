@@ -56,6 +56,8 @@ class Aeroflow < Formula
   def caveats
     <<~EOS
       AeroFlow controls windows through the macOS Accessibility API.
+      It requires macOS 15 (Sequoia) or later and is built for Apple
+      Silicon; tested on Sequoia and Tahoe (macOS 26).
 
       1. Grant it access:
            System Settings -> Privacy & Security -> Accessibility
