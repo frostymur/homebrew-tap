@@ -3,7 +3,9 @@ class Aeroflow < Formula
   homepage "https://github.com/frostymur/OmniWM"
   license "GPL-2.0-only"
 
-  depends_on "swift" => :build
+  # Builds with the system toolchain (Xcode or Command Line Tools).
+  # Homebrew's standalone Swift lacks xcstringstool, which SwiftPM needs
+  # to process the .xcstrings localization resources.
 
   on_macos do
     on_arm do
@@ -13,6 +15,9 @@ class Aeroflow < Formula
   end
 
   def install
+    unless which("swift")
+      odie "swift not found. Install Xcode Command Line Tools first: xcode-select --install"
+    end
     system "swift", "build", "-c", "release", "--arch", "arm64"
     rel = Pathname.new(
       Utils.safe_popen_read(
