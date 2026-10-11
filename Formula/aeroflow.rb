@@ -15,13 +15,17 @@ class Aeroflow < Formula
   end
 
   def install
-    unless which("swift")
-      odie "swift not found. Install Xcode Command Line Tools first: xcode-select --install"
+    # System toolchain (see class comment): brew's standalone Swift lacks
+    # xcstringstool, so a Homebrew `swift` earlier on the PATH would break
+    # the build.
+    swift = "/usr/bin/swift"
+    unless File.exist?(swift)
+      odie "System Swift toolchain not found. Install Xcode Command Line Tools first: xcode-select --install"
     end
-    system "swift", "build", "-c", "release", "--arch", "arm64"
+    system swift, "build", "-c", "release", "--arch", "arm64"
     rel = Pathname.new(
       Utils.safe_popen_read(
-        "swift", "build", "-c", "release", "--arch", "arm64", "--show-bin-path"
+        swift, "build", "-c", "release", "--arch", "arm64", "--show-bin-path"
       ).chomp,
     )
 
