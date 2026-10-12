@@ -37,7 +37,9 @@ class Aeroflow < Formula
     (app/"Contents/MacOS").install rel/"aeroflowctl"
     (app/"Contents").install rel/"AeroFlow_AeroFlow.bundle"
 
-    # Ad-hoc sign so macOS gives the app a stable identity for TCC.
+    # Ad-hoc sign, bottom-up (bundle first, then executables, then the app),
+    # so macOS gives the app a stable identity for TCC.
+    system "codesign", "--force", "--sign", "-", (app/"Contents/Resources/AeroFlow_AeroFlow.bundle").to_s
     system "codesign", "--force", "--sign", "-", (app/"Contents/MacOS/aeroflowctl").to_s
     system "codesign", "--force", "--sign", "-", (app/"Contents/MacOS/AeroFlow").to_s
     system "codesign", "--force", "--sign", "-", app.to_s
