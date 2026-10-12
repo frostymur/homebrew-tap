@@ -16,17 +16,25 @@ class Aeroflow < Formula
   def install
     # The release archive contains the ad-hoc-signed AeroFlow.app. The bundle
     # carries the stable TCC identity (bundle ID) and the onboarding window;
-    # the daemon and CLI live inside it.
-    app = buildpath/"AeroFlow.app"
-    prefix.install app
+    # the daemon and CLI live inside it. Depending on the Homebrew revision,
+    # the archive's single top-level dir may itself be buildpath (newer) or
+    # sit at buildpath/AeroFlow.app (older) — handle both.
+    if (buildpath/"AeroFlow.app/Contents/MacOS/AeroFlow").exist?
+      app_dir = buildpath/"AeroFlow.app"
+    elsif (buildpath/"Contents/MacOS/AeroFlow").exist?
+      app_dir = buildpath
+    else
+      raise "AeroFlow.app not found in buildpath #{buildpath}; " \
+            "contents: #{Dir[buildpath.to_s + "/*"].inspect}"
+    end
+    prefix.mkpath
+    cp_r app_dir, prefix/"AeroFlow.app"
+    # This Homebrew revision seeds a .brew_home inside buildpath, which
+    # for single-top-level archives is the bundle itself; don't ship it.
+    rm_rf prefix/"AeroFlow.app/.brew_home"
     # Relative to bin/, the ctl sits inside the app bundle at the prefix root.
+    bin.mkpath
     ln_sf "../AeroFlow.app/Contents/MacOS/aeroflowctl", bin/"aeroflowctl"
-  end
-
-  service do
-    run [opt_prefix/"AeroFlow.app/Contents/MacOS/AeroFlow"]
-    keep_alive true
-    process_type :interactive
   end
 
   def caveats
