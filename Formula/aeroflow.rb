@@ -1,51 +1,28 @@
 class Aeroflow < Formula
   desc "Lightweight, config-driven tiling window manager for macOS"
   homepage "https://github.com/frostymur/OmniWM"
+  url "https://github.com/frostymur/OmniWM/releases/download/v0.7.4/AeroFlow-v0.7.4.zip"
+  version "0.7.4"
+  sha256 "3c522e03a0ce83ea95a33a59a862d4c8d81c64aa169b24f0bf9b23de383febe0"
   license "GPL-2.0-only"
 
-  # Builds with the system toolchain (Xcode or Command Line Tools).
-  # Homebrew's standalone Swift lacks xcstringstool, which SwiftPM needs
-  # to process the .xcstrings localization resources.
-
-  on_macos do
-    on_arm do
-      url "https://github.com/frostymur/OmniWM/archive/refs/tags/v0.7.4.tar.gz"
-      sha256 "3823bd244d73d91f5bcd8643f42a4c532fa958f0bd329185e50e6a8bc07a6ec3"
-    end
+  livecheck do
+    url "https://api.github.com/repos/frostymur/OmniWM/releases/latest"
+    match(/tag_name[":=\s]+v?(\d+(?:\.\d+)+)/i)
   end
 
+  # Prebuilt arm64 binary; deployment target is macOS 15 (Sequoia).
+  # Tested on Sequoia and Tahoe (macOS 26). No toolchain required.
+  depends_on :arm64
+  depends_on macos: :sequoia
+
   def install
-    # System toolchain (see class comment): brew's standalone Swift lacks
-    # xcstringstool, so a Homebrew `swift` earlier on the PATH would break
-    # the build.
-    swift = "/usr/bin/swift"
-    unless File.exist?(swift)
-      odie "System Swift toolchain not found. Install Xcode Command Line Tools first: xcode-select --install"
-    end
-    system swift, "build", "-c", "release", "--arch", "arm64", "--disable-sandbox"
-    rel = Pathname.new(
-      Utils.safe_popen_read(
-        swift, "build", "-c", "release", "--arch", "arm64", "--disable-sandbox", "--show-bin-path"
-      ).chomp,
-    )
-
-    # Assemble the app bundle (Homebrew idiom: <dest dir>.install <file>).
+    # The release archive contains the ad-hoc-signed AeroFlow.app. The bundle
+    # carries the stable TCC identity (bundle ID) and the onboarding window;
+    # the daemon and CLI live inside it.
     app = buildpath/"AeroFlow.app"
-    (app/"Contents/MacOS").mkpath
-    (app/"Contents").install buildpath/"Info.plist"
-    (app/"Contents/MacOS").install rel/"AeroFlow"
-    (app/"Contents/MacOS").install rel/"aeroflowctl"
-    (app/"Contents").install rel/"AeroFlow_AeroFlow.bundle"
-
-    # Ad-hoc sign, bottom-up (bundle first, then executables, then the app),
-    # so macOS gives the app a stable identity for TCC.
-    system "codesign", "--force", "--sign", "-", (app/"Contents/Resources/AeroFlow_AeroFlow.bundle").to_s
-    system "codesign", "--force", "--sign", "-", (app/"Contents/MacOS/aeroflowctl").to_s
-    system "codesign", "--force", "--sign", "-", (app/"Contents/MacOS/AeroFlow").to_s
-    system "codesign", "--force", "--sign", "-", app.to_s
-
     prefix.install app
-    # Relative to bin/, the ctl lives inside the app bundle in the prefix.
+    # Relative to bin/, the ctl sits inside the app bundle at the prefix root.
     ln_sf "../AeroFlow.app/Contents/MacOS/aeroflowctl", bin/"aeroflowctl"
   end
 
@@ -58,19 +35,15 @@ class Aeroflow < Formula
   def caveats
     <<~EOS
       AeroFlow controls windows through the macOS Accessibility API.
-      It requires macOS 15 (Sequoia) or later and is built for Apple
-      Silicon; tested on Sequoia and Tahoe (macOS 26).
+      It is ad-hoc signed, so macOS treats every release as a new binary:
+      if Accessibility stops working after `brew upgrade aeroflow`,
+      toggle it off and back on in the Accessibility list.
 
-      1. Grant it access:
+      1. Grant it access (first launch shows an onboarding window):
            System Settings -> Privacy & Security -> Accessibility
-         (enable "AeroFlow", located at #{prefix}/AeroFlow.app)
+         (enable "AeroFlow")
       2. Start the daemon now and at every login:
            brew services start aeroflow
-
-      AeroFlow is built from source and ad-hoc signed, so every upgrade
-      is a new binary as far as macOS is concerned: if Accessibility
-      stops working after 'brew upgrade aeroflow', toggle it off and
-      back on in the Accessibility list.
 
       Configuration: ~/.config/aeroflow/settings.toml
       CLI:           aeroflowctl (installed into your PATH)
