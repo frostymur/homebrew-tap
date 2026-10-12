@@ -30,7 +30,7 @@ class Aeroflow < Formula
     )
 
     app = buildpath/"AeroFlow.app"
-    rm_r(app)
+    rm_r(app) if File.exist?(app)
     (app/"Contents/MacOS").mkpath
     (app/"Contents/Resources").mkpath
     (rel/"AeroFlow").install app/"Contents/MacOS/AeroFlow"
