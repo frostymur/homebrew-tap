@@ -29,14 +29,13 @@ class Aeroflow < Formula
       ).chomp,
     )
 
+    # Assemble the app bundle (Homebrew idiom: <dest dir>.install <file>).
     app = buildpath/"AeroFlow.app"
-    rm_r(app) if File.exist?(app)
     (app/"Contents/MacOS").mkpath
-    (app/"Contents/Resources").mkpath
-    (rel/"AeroFlow").install app/"Contents/MacOS/AeroFlow"
-    (rel/"aeroflowctl").install app/"Contents/MacOS/aeroflowctl"
-    (buildpath/"Info.plist").install app/"Contents/Info.plist"
-    (rel/"AeroFlow_AeroFlow.bundle").cp_r app/"Contents/Resources/"
+    (app/"Contents").install buildpath/"Info.plist"
+    (app/"Contents/MacOS").install rel/"AeroFlow"
+    (app/"Contents/MacOS").install rel/"aeroflowctl"
+    (app/"Contents").install rel/"AeroFlow_AeroFlow.bundle"
 
     # Ad-hoc sign so macOS gives the app a stable identity for TCC.
     system "codesign", "--force", "--sign", "-", app/"Contents/MacOS/aeroflowctl"
@@ -44,6 +43,7 @@ class Aeroflow < Formula
     system "codesign", "--force", "--sign", "-", app
 
     prefix.install app
+    # Relative to bin/, the ctl lives inside the app bundle in the prefix.
     ln_sf "../AeroFlow.app/Contents/MacOS/aeroflowctl", bin/"aeroflowctl"
   end
 
