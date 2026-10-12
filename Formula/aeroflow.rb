@@ -7,14 +7,11 @@ class Aeroflow < Formula
   license "GPL-2.0-only"
 
   livecheck do
+    # url-only: the :github_api default strategy reads tag_name from the
+    # releases API. (url exists in every Livecheck DSL revision; match/regex
+    # do not.)
     url "https://api.github.com/repos/frostymur/OmniWM/releases/latest"
-    match(/tag_name[":=\s]+v?(\d+(?:\.\d+)+)/i)
   end
-
-  # Prebuilt arm64 binary; deployment target is macOS 15 (Sequoia).
-  # Tested on Sequoia and Tahoe (macOS 26). No toolchain required.
-  depends_on :arm64
-  depends_on macos: :sequoia
 
   def install
     # The release archive contains the ad-hoc-signed AeroFlow.app. The bundle
