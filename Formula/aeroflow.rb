@@ -37,6 +37,11 @@ class Aeroflow < Formula
     ln_sf "../AeroFlow.app/Contents/MacOS/aeroflowctl", bin/"aeroflowctl"
   end
 
+  service do
+    run [opt_prefix/"AeroFlow.app/Contents/MacOS/AeroFlow"]
+    keep_alive true
+    process_type :interactive
+  end
   def caveats
     <<~EOS
       AeroFlow controls windows through the macOS Accessibility API.
