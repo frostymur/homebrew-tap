@@ -9,8 +9,8 @@ class Aeroflow < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/frostymur/OmniWM/archive/refs/tags/v0.7.3.tar.gz"
-      sha256 "2ddc995c92240043bfdc68db54f36902ae4bc62428d61bfea3f4bc6c011c8485"
+      url "https://github.com/frostymur/OmniWM/archive/refs/tags/v0.7.4.tar.gz"
+      sha256 "3823bd244d73d91f5bcd8643f42a4c532fa958f0bd329185e50e6a8bc07a6ec3"
     end
   end
 
