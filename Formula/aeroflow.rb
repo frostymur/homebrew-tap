@@ -38,9 +38,9 @@ class Aeroflow < Formula
     (app/"Contents").install rel/"AeroFlow_AeroFlow.bundle"
 
     # Ad-hoc sign so macOS gives the app a stable identity for TCC.
-    system "codesign", "--force", "--sign", "-", app/"Contents/MacOS/aeroflowctl"
-    system "codesign", "--force", "--sign", "-", app/"Contents/MacOS/AeroFlow"
-    system "codesign", "--force", "--sign", "-", app
+    system "codesign", "--force", "--sign", "-", (app/"Contents/MacOS/aeroflowctl").to_s
+    system "codesign", "--force", "--sign", "-", (app/"Contents/MacOS/AeroFlow").to_s
+    system "codesign", "--force", "--sign", "-", app.to_s
 
     prefix.install app
     # Relative to bin/, the ctl lives inside the app bundle in the prefix.
