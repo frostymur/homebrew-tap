@@ -47,7 +47,8 @@ class Aeroflow < Formula
       AeroFlow controls windows through the macOS Accessibility API.
       It is ad-hoc signed, so macOS treats every release as a new binary:
       if Accessibility stops working after `brew upgrade aeroflow`,
-      toggle it off and back on in the Accessibility list.
+      toggle AeroFlow off and back on in the Accessibility list,
+      or restart the service: brew services restart aeroflow
 
       1. Grant it access (first launch shows an onboarding window):
            System Settings -> Privacy & Security -> Accessibility
