@@ -3,7 +3,7 @@ class Aeroflow < Formula
   homepage "https://github.com/frostymur/OmniWM"
   url "https://github.com/frostymur/OmniWM/releases/download/v0.7.6/AeroFlow-v0.7.6.zip"
   version "0.7.6"
-  sha256 "7e61e6d7190c95b8f8e4ef7ee70c8d6a1163aecb308c4d518557aa9ea85eae4c"
+  sha256 "b1a31e98ec3ad7143711df6b8e95848a9c62c3102fa1a336bd58baae68a73e08"
   license "GPL-2.0-only"
 
   livecheck do
