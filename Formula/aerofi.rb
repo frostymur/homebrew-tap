@@ -4,11 +4,11 @@ class Aerofi < Formula
   license "MIT"
 
   if Hardware::CPU.arm?
-    url "https://github.com/frostymur/aerofi/releases/download/v0.2.30/aerofi-mac-arm64.tar.gz"
-    sha256 "597acbe0c8eefacaeebfe3bd952c463183b5daf1f20bbefccc2655fe0d62564b"
+    url "https://github.com/frostymur/aerofi/releases/download/v0.2.31/aerofi-mac-arm64.tar.gz"
+    sha256 "0b5aaa4e04f346833e1dd6f959421be179d741e7f2902d18210b4cf1b2678890"
   else
-    url "https://github.com/frostymur/aerofi/releases/download/v0.2.30/aerofi-mac-x86_64.tar.gz"
-    sha256 "8895a682ea279e7272433381dc4898aa08d2398783f8657edc78ca0bf10ff669"
+    url "https://github.com/frostymur/aerofi/releases/download/v0.2.31/aerofi-mac-x86_64.tar.gz"
+    sha256 "53b138844dbb440656151e5f224d560110d5578c32f6ea0286f047fd6c1da055"
   end
 
   def install
