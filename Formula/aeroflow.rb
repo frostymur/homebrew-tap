@@ -1,9 +1,9 @@
 class Aeroflow < Formula
   desc "Lightweight, config-driven tiling window manager for macOS"
   homepage "https://github.com/frostymur/OmniWM"
-  url "https://github.com/frostymur/OmniWM/releases/download/v0.7.9/AeroFlow-v0.7.9.zip"
-  version "0.7.9"
-  sha256 "c0a16e28ef6faf283e573d0b259b664de6865d6d9c81f3884d218d67e5a663e8"
+  url "https://github.com/frostymur/OmniWM/releases/download/v0.7.10/AeroFlow-v0.7.10.zip"
+  version "0.7.10"
+  sha256 "1290d1fcb565d843bd7449e27469d681cd0ae370e18db73e81eae585cd115761"
   license "GPL-2.0-only"
 
   livecheck do
